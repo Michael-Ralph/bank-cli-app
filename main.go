@@ -2,14 +2,29 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 )
 
-func main() {
+const balanceFile = "balance.txt"
 
+func readBalance() float64 {
+	data, _ := os.ReadFile(balanceFile)
+	dataString := string(data)
+	balance, _ := strconv.ParseFloat(dataString, 64)
+	return balance
+}
+
+func writeBalance(balance float64) {
+	balanceToText := fmt.Sprint(balance)
+	os.WriteFile(balanceFile, []byte(balanceToText), 0644)
+}
+
+func main() {
+	var accountBalance = readBalance()
 	fmt.Println("Welcome to Go Bank!")
 
 	for {
-		var accountBalence = 3000.00
 		fmt.Println("What would you like to do today?")
 		fmt.Println("1. Check balance")
 		fmt.Println("2. Deposit money")
@@ -21,7 +36,7 @@ func main() {
 
 		switch choice {
 		case 1:
-			fmt.Printf("You balance is: R%.2f\n", accountBalence)
+			fmt.Printf("You balance is: R%.2f\n", accountBalance)
 		case 2:
 			var depositAmount float64
 			fmt.Print("Deposit amount: R")
@@ -30,8 +45,9 @@ func main() {
 				fmt.Println("Invali amount, deposit amount must be greater then R0")
 				continue
 			}
-			accountBalence += depositAmount
-			fmt.Printf("Updated balence: R%.2f\n", accountBalence)
+			accountBalance += depositAmount
+			fmt.Printf("Updated balence: R%.2f\n", accountBalance)
+			writeBalance(accountBalance)
 		case 3:
 			var withdralAmount float64
 			fmt.Print("Withdraw amount: R")
@@ -40,12 +56,13 @@ func main() {
 				fmt.Println("Invali amount, withdrawl amount must be greater then R0")
 				continue
 			}
-			if withdralAmount > accountBalence {
+			if withdralAmount > accountBalance {
 				fmt.Println("Invali amount, withdrawl greater then balence")
 				continue
 			}
-			accountBalence -= withdralAmount
-			fmt.Printf("Updated balence: R%.2f\n", accountBalence)
+			accountBalance -= withdralAmount
+			fmt.Printf("Updated balence: R%.2f\n", accountBalance)
+			writeBalance(accountBalance)
 		default:
 			fmt.Println("Exiting app.")
 			fmt.Println("Thank you for using Go Bank!")
