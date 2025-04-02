@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	"os"
 )
 
 func main() {
-	for i := 0; i < 2; i++ {
+
+	fmt.Println("Welcome to Go Bank!")
+
+	for {
 		var accountBalence = 3000.00
-		fmt.Println("Welcome to Go Bank!")
 		fmt.Println("What would you like to do today?")
 		fmt.Println("1. Check balance")
 		fmt.Println("2. Deposit money")
@@ -26,7 +27,7 @@ func main() {
 			fmt.Scan(&depositAmount)
 			if depositAmount <= 0 {
 				fmt.Println("Invali amount, deposit amount must be greater then R0")
-				return
+				continue
 			}
 			accountBalence += depositAmount
 			fmt.Printf("Updated balence: R%.2f\n", accountBalence)
@@ -36,18 +37,19 @@ func main() {
 			fmt.Scan(&withdralAmount)
 			if withdralAmount <= 0 {
 				fmt.Println("Invali amount, withdrawl amount must be greater then R0")
-				return
+				continue
 			}
 			if withdralAmount > accountBalence {
 				fmt.Println("Invali amount, withdrawl greater then balence")
-				return
+				continue
 			}
 			accountBalence -= withdralAmount
 			fmt.Printf("Updated balence: R%.2f\n", accountBalence)
 		} else if choice == 4 {
 			fmt.Println("Exiting app.")
-			os.Exit(0)
+			break
 		}
 
 	}
+	fmt.Println("Thank you for using Go Bank!")
 }
